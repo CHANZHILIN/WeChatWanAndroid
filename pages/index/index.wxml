@@ -1,0 +1,12 @@
+<view class='container'>
+  <block wx:for="{{language}}" wx:key="index">
+  <view class="top">
+  <text class="top-setTop">置顶</text>
+  <text class="top-author">扔物线</text>
+  <text class="top-time">刚刚</text>
+  <view class='text-content'>{{item}}</view> 
+  <text class="text-original">WanAndroid/干货资源</text>
+  <image class="image-focus" src="../../images/love.png" />
+  </view>
+  </block>
+</view>

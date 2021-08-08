@@ -1,0 +1,46 @@
+page{
+  background-color: #F5F5F5
+}
+.container{
+  padding: 10px 20px;
+  align-content: center;
+}
+.top{
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1rpx solid #F5F5F5;
+  background-color: #FFFFFF;
+  position: relative;
+}
+.top-setTop{
+  font-size: 10px;
+  padding: 2px;
+  color: red;
+  border:1rpx dashed red;
+  background-color: white;
+}
+.top-author{
+  font-size: xx-small;
+  margin-left: 10px;
+  color: #cccccc;
+}
+.top-time{
+  position: absolute;
+  right: 15px;
+  font-size: xx-small;
+  color: #cccccc;
+}
+.text-content{
+ font-size:large;
+ padding: 5px;
+}
+.text-original{
+  font-size: xx-small;
+  color: #cccccc;
+}
+.image-focus{
+  right: 15px;
+  position: absolute;
+  width: 15px;
+  height: 15px;
+}
