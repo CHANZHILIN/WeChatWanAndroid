@@ -1,12 +1,12 @@
 <view class='container'>
-  <block wx:for="{{language}}" wx:key="index">
+  <block wx:for="{{articleList}}" wx:key="index">
   <view class="top">
-  <text class="top-setTop">置顶</text>
-  <text class="top-author">扔物线</text>
-  <text class="top-time">刚刚</text>
-  <view class='text-content'>{{item}}</view> 
-  <text class="text-original">WanAndroid/干货资源</text>
-  <image class="image-focus" src="../../images/love.png" />
+  <text class="top-setTop" style="{{item.isSetTop?'display:;':'display:none;'}}">置顶</text>
+  <text class="top-author">{{item.author}}</text>
+  <text class="top-time">{{item.time}}</text>
+  <view class='text-content'>{{item.content}}</view> 
+  <text class="text-original">{{item.original}}</text>
+  <image class="image-focus" src="{{item.isFocus?'../../images/icon_focus.png':'../../images/icon_unfocus.png'}}" bindtap="onFocus" data-index="{{index}}"/>
   </view>
   </block>
 </view>
