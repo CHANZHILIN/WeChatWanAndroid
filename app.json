@@ -4,13 +4,16 @@
         "pages/logs/logs",
         "pages/official_account/official_account",
         "pages/system/system",
-        "pages/project/project"
+        "pages/project/project",
+        "pages/web_view/webView"
     ],
     "window": {
-        "backgroundTextStyle": "light",
+        "backgroundTextStyle": "dark",
         "navigationBarBackgroundColor": "#fff",
         "navigationBarTitleText": "玩Android",
-        "navigationBarTextStyle": "black"
+        "navigationBarTextStyle": "black",
+        "backgroundColorTop": "#72B9E8",
+        "backgroundColorBottom": "#72B9E8"
     },
     "tabBar": {
         "color": "#ccc",

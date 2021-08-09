@@ -1,0 +1,2 @@
+<!--pages/web_view/webView.wxml-->
+<web-view src="{{artUrl}}"></web-view>

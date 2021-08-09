@@ -10,28 +10,25 @@ Page({
   data: {
     dataArray:[],
     //当前页码
-    pageNum: 0,
-    triggered: false,
+    pageNum: 0
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    this.getData(true)
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    this.getData(true)
   },
   /**
    * 获取数据
@@ -44,15 +41,17 @@ Page({
       url: 'https://www.wanandroid.com/article/list/' +currentPageNum + '/json',
       success: function (result) {
         var newData = JSON.parse(JSON.stringify(result.data));
-        // console.log(newData.data.datas)
+        console.log(newData.data.datas)
         //大于最大页码时候 返回
         if(currentPageNum > newData.data.pageCount) return
         var list = new Array();
         newData.data.datas.forEach((item, index, array) => {
           //添加数据
           list.push({
-            author: item.shareUser,
+            id:item.id,
+            author: item.author != ""? item.author:item.shareUser,
             isSetTop: index == 0 || index == 1 ? true : false,
+            isNew:item.fresh,
             time: item.niceDate,
             content: item.title,
             original: item.superChapterName + "/" + item.chapterName,
@@ -67,39 +66,23 @@ Page({
         }
           that.setData({
             ["dataArray["+currentPageNum+"]"]: list,
-            triggered: false,
             pageNum:currentPageNum
           })
-        that._freshing = false
+          wx.stopPullDownRefresh()
       }
     })
-  },
-  /**
-   * 加载更多
-   */
-  loadMore(e) {
-    this.getData(false)
-  },
-  onRefresh() {
-    if (this._freshing) return
-    this._freshing = true
-    this.getData(true)
-    setTimeout(() => {
-      this.setData({
-        triggered: false,
-      })
-      this._freshing = false
-    }, 3000)
   },
 
   /**
    * 点击时事件
    */
   onItemClick: function (event) {
+    var arrayIndex = event.currentTarget.dataset.array
     var toughIndex = event.currentTarget.dataset.index
-    if (this.data.articleList[toughIndex].link != null) {
+    if (this.data.dataArray[arrayIndex][toughIndex].link != null) {
       wx.navigateTo({
-        url: this.data.articleList[toughIndex].link,
+        // url: this.data.dataArray[arrayIndex][toughIndex].link,
+        url: '../web_view/webView?artUrl='+this.data.dataArray[arrayIndex][toughIndex].link
       })
     }
   },
@@ -107,9 +90,11 @@ Page({
    * 点击收藏
    */
   onFocus: function (event) {
+    var arrayIndex = event.currentTarget.dataset.array
     var toughIndex = event.currentTarget.dataset.index
     this.setData({
-      ['articleList[' + toughIndex + '].isFocus']: !this.data.articleList[toughIndex].isFocus
+      ["dataArray["+arrayIndex+"]["+toughIndex+"].isFocus"]:!this.data.dataArray[arrayIndex][toughIndex].isFocus
+      // ['articleList[' + toughIndex + '].isFocus']: !this.data.articleList[toughIndex].isFocus
     })
 
   },
@@ -131,14 +116,17 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-
+    this.getData(true)
+    setTimeout(() => {
+      wx.stopPullDownRefresh()
+    }, 5000)
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    this.getData(false)
   },
 
   /**
