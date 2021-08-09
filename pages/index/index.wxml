@@ -1,12 +1,20 @@
-<view class='container'>
-  <block wx:for="{{articleList}}" wx:key="index">
-  <view class="top">
-  <text class="top-setTop" style="{{item.isSetTop?'display:;':'display:none;'}}">置顶</text>
-  <text class="top-author">{{item.author}}</text>
-  <text class="top-time">{{item.time}}</text>
-  <view class='text-content'>{{item.content}}</view> 
-  <text class="text-original">{{item.original}}</text>
-  <image class="image-focus" src="{{item.isFocus?'../../images/icon_focus.png':'../../images/icon_unfocus.png'}}" bindtap="onFocus" data-index="{{index}}"/>
+<scroll-view scroll-y style="width: 100%; height: 500px;" refresher-enabled="{{true}}" refresher-threshold="{{100}}"
+  refresher-default-style="white" refresher-background="#72B9E8" refresher-triggered="{{triggered}}"
+ bindrefresherrefresh="onRefresh" bindscrolltolower="loadMore">
+  <view class='container'>
+    <block wx:for="{{dataArray}}" wx:for-item="articleList" wx:for-index="dataArrayIndex" wx:key="dataArrayIndex">
+      <block wx:for="{{articleList}}" wx:key="index">
+        <view class="top" bindtap="onItemClick" data-index="{{index}}">
+          <text class="top-setTop" style="{{item.isSetTop?'display:;':'display:none;'}}">置顶</text>
+          <text class="top-author">{{item.author}}</text>
+          <text class="top-time">{{item.time}}</text>
+          <view class='text-content'>{{item.content}}</view>
+          <text class="text-original">{{item.original}}</text>
+          <image class="image-focus"
+            src="{{item.isFocus?'../../images/icon_focus.png':'../../images/icon_unfocus.png'}}" bindtap="onFocus"
+            data-index="{{index}}" />
+        </view>
+      </block>
+    </block>
   </view>
-  </block>
-</view>
+</scroll-view>
