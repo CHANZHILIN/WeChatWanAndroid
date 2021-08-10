@@ -1,1 +1,23 @@
-/* pages/official_account/official_account.wxss */
+page {
+  background-color: #F5F5F5
+}
+.scroll-view-official{
+  width: 100%;
+  white-space: nowrap;
+}
+.top{
+  display: inline-block;
+}
+.top-name-underline{
+  width: fit-content;
+  padding: 4px;
+  background-color: tomato;
+  font-size: medium;
+}
+.top-name-nounderline{ 
+   width: fit-content;
+  padding: 4px;
+  background-color: #72B9E8;
+  font-size: medium;
+  color: white;
+}

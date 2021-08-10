@@ -5,14 +5,34 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+        officialList: [],
+        currentSelected: 0,
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-
+        var list = new Array();
+        for (var i = 0; i <= 20; i++) {
+            list.push({
+                name: "弘扬" + i,
+                isCheck: i == 0 ? true : false
+            })
+        }
+        this.setData({
+            officialList: list
+        })
+    },
+    //点击
+    onOfficialClick: function (event) {
+        var toughtIndex = event.currentTarget.dataset.index
+        var oldSelected = this.data.currentSelected
+        this.setData({
+            ["officialList[" + oldSelected + "].isCheck"]: false,
+            ["officialList[" + toughtIndex + "].isCheck"]: true,
+            currentSelected: toughtIndex
+        })
     },
 
     /**

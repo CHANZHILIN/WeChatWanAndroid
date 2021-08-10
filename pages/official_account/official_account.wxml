@@ -1,2 +1,9 @@
 <!--pages/official_account/official_account.wxml-->
-<text>pages/official_account/official_account.wxml</text>
+<scroll-view class="scroll-view-official" scroll-x="true">
+  <block wx:for="{{officialList}}" wx:key="index">
+    <view class="top" >
+      <text class="top-name-underline" wx:if="{{item.isCheck}}" data-index="{{index}}" catchtap="onOfficialClick">{{item.name}}</text>
+      <text class="top-name-nounderline" wx:else data-index="{{index}}" catchtap="onOfficialClick">{{item.name}}</text>
+      </view>
+  </block>
+</scroll-view>
