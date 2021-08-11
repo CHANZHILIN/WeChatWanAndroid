@@ -1,23 +1,91 @@
 page {
   background-color: #F5F5F5
 }
-.scroll-view-official{
+
+.scroll-view-official {
   width: 100%;
+  height: 60rpx;
   white-space: nowrap;
+  position: fixed;
+  top: 0rpx;
+  z-index: 99;
 }
-.top{
+
+.top {
   display: inline-block;
 }
-.top-name-underline{
+
+.top-name-underline {
   width: fit-content;
-  padding: 4px;
+  padding: 10rpx;
   background-color: tomato;
-  font-size: medium;
+  color: white;
+  font-size: large;
 }
-.top-name-nounderline{ 
-   width: fit-content;
-  padding: 4px;
+
+.top-name-nounderline {
+  width: fit-content;
+  padding: 10rpx;
   background-color: #72B9E8;
   font-size: medium;
   color: white;
+}
+
+.container{
+  margin-top: 60rpx;
+}
+
+.medium {
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1rpx solid #F5F5F5;
+  background-color: #FFFFFF;
+  position: relative;
+}
+
+.medium-setTop {
+  font-size: 10px;
+  padding: 2px;
+  margin-right: 5px;
+  color: red;
+  border: 1rpx solid red;
+  background-color: white;
+}
+
+.medium-setTopNew {
+  font-size: 10px;
+  padding: 2px;
+  margin-right: 5px;
+  color: green;
+  border: 1rpx dashed green;
+  background-color: white;
+}
+
+.medium-author {
+  font-size: x-small;
+  color: #cccccc;
+}
+
+.medium-time {
+  position: absolute;
+  right: 15px;
+  font-size: x-small;
+  color: #cccccc;
+}
+
+.text-content {
+  font-size: large;
+  padding: 5px;
+}
+
+.text-original {
+  font-size: x-small;
+  color: #cccccc;
+}
+
+.image-focus {
+  right: 15px;
+  position: absolute;
+  width: 25px;
+  height: 25px;
 }

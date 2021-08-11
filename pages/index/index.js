@@ -10,7 +10,9 @@ Page({
   data: {
     dataArray:[],
     //当前页码
-    pageNum: 0
+    pageNum: 0,
+    //总页数
+    totalPageNume:0
   },
   /**
    * 生命周期函数--监听页面加载
@@ -35,42 +37,41 @@ Page({
    * @param {是否刷新} isRefresh 
    */
   getData: function (isRefresh) {
-    var that = this
-    var currentPageNum = isRefresh ? 0 : that.data.pageNum + 1
-    wx.request({
-      url: 'https://www.wanandroid.com/article/list/' +currentPageNum + '/json',
-      success: function (result) {
-        var newData = JSON.parse(JSON.stringify(result.data));
-        console.log(newData.data.datas)
-        //大于最大页码时候 返回
-        if(currentPageNum > newData.data.pageCount) return
-        var list = new Array();
-        newData.data.datas.forEach((item, index, array) => {
-          //添加数据
-          list.push({
-            id:item.id,
-            author: item.author != ""? item.author:item.shareUser,
-            isSetTop: index == 0 || index == 1 ? true : false,
-            isNew:item.fresh,
-            time: item.niceDate,
-            content: item.title,
-            original: item.superChapterName + "/" + item.chapterName,
-            isFocus: item.collect,
-            link: item.link
-          })
-        })
-        if (isRefresh) {
-          that.setData({
-            dataArray: []
-          })
-        }
-          that.setData({
-            ["dataArray["+currentPageNum+"]"]: list,
-            pageNum:currentPageNum
-          })
-          wx.stopPullDownRefresh()
-      }
-    })
+    let that = this
+    let currentPageNum = isRefresh ? 0 : that.data.pageNum + 1
+    //大于最大页码时候 返回
+    if(currentPageNum > that.data.totalPageNume) return
+    let suffixUrl = '/article/list/' +currentPageNum + '/json'
+    app.wxRequest("GET", suffixUrl, null,
+        (res) => {
+            let list = new Array()
+            res.datas.forEach((item, index, array) => {
+              //添加数据
+              list.push({
+                id:item.id,
+                author: item.author != ""? item.author:item.shareUser,
+                isSetTop: index == 0 || index == 1 ? true : false,
+                isNew:item.fresh,
+                time: item.niceDate,
+                content: item.title,
+                original: item.superChapterName + "/" + item.chapterName,
+                isFocus: item.collect,
+                link: item.link
+              })
+            })
+            if (isRefresh) {
+              that.setData({
+                dataArray: [],
+                totalPageNume:res.pageCount
+              })
+            }
+              that.setData({
+                ["dataArray["+currentPageNum+"]"]: list,
+                pageNum:currentPageNum
+              })
+              wx.stopPullDownRefresh()
+        },
+        (err) => { })
   },
 
   /**
