@@ -31,6 +31,8 @@ Page({
             ["officialList[" + toughtIndex + "].isCheck"]: true,
             currentSelected: toughtIndex
         })
+        let id = this.data.officialList[this.data.currentSelected].id
+        this.getData(true,id)
     },
     /**
      * 公众号作者列表数据
