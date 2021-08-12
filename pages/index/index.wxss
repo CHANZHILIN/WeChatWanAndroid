@@ -16,8 +16,8 @@ page{
   font-size: 10px;
   padding: 2px;
   margin-right: 5px;
-  color: red;
-  border:1rpx solid red;
+  color: tomato;
+  border:1rpx solid tomato;
   background-color: white;
 }
 .top-setTopNew{

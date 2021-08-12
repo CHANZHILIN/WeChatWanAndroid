@@ -1,3 +1,8 @@
 {
-  "usingComponents": {}
+  "usingComponents": {},
+  "enablePullDownRefresh": true,
+  "onReachBottomDistance": 20,
+  "backgroundColorTop": "#72B9E8",
+  "backgroundColorBottom": "#72B9E8",
+  "backgroundTextStyle": "dark"
 }

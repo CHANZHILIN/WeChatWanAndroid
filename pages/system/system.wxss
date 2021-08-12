@@ -1,1 +1,83 @@
 /* pages/system/system.wxss */
+page {
+  background-color: #F5F5F5
+}
+
+.scroll-view-official {
+  width: 100%;
+  white-space: nowrap;
+  position: fixed;
+  top: 0px;
+  background-color: white;
+  z-index: 99;
+  text-align: center;
+}
+
+.top {
+  display: inline-block;
+}
+
+.top-nav-left {
+  width: fit-content;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  background-color: #ccc;
+  color: white;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  font-size: medium;
+}
+.top-nav-left-checked {
+  width: fit-content;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  background-color: tomato;
+  color: white;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  font-size: medium;
+}
+
+.top-nav-right {
+  width: fit-content;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: #ccc;
+  font-size: medium;
+  color: white;
+}
+
+.top-nav-right-checked {
+  width: fit-content;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  background-color: tomato;
+  font-size: medium;
+  color: white;
+}
+
+.container{
+  width: 100%;
+  margin-top: 40px;
+}
+.system-medium{
+  width: 100%;
+  padding: 10px;
+  border-bottom: 1px solid #F5F5F5;
+  background-color: #FFFFFF;
+}
+
+.text-title {
+  font-size: medium;
+  padding: 5px;
+  color: black;
+}
+.text-content {
+  font-size: small;
+  padding: 5px;
+  color: #ccc;
+}

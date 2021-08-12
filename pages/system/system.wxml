@@ -1,2 +1,20 @@
 <!--pages/system/system.wxml-->
-<text>pages/system/system.wxml</text>
+<scroll-view class="scroll-view-official" scroll-x="true" showScrollbar="{{false}}">
+  <block wx:for="{{systemHeaderList}}" wx:key="index" >
+    <view class="top" >
+      <view class="top-nav-left{{item.isCheck?'-checked':''}}" wx:if="{{item.id=='system'}}" data-index="{{index}}" catchtap="onSystemHeaderClick">{{item.name}}</view>
+      <view class="top-nav-right{{item.isCheck?'-checked':''}}" wx:else data-index="{{index}}" catchtap="onSystemHeaderClick">{{item.name}}</view>
+      </view>
+  </block>
+</scroll-view>
+
+<scroll-view class='container' scroll-y="{{true}}">
+<block wx:for="{{dataArray}}" wx:for-item="articleList" wx:for-index="dataArrayIndex" wx:key="dataArrayIndex">
+      <block wx:for="{{articleList}}" wx:key="index">
+        <view class="system-medium" bindtap="onItemClick" data-index="{{index}}" data-array="{{dataArrayIndex}}">
+          <view class='text-title'>{{item.title}}</view>
+          <text class="text-content">{{item.content}}</text>
+        </view>
+      </block>
+    </block>
+</scroll-view>
