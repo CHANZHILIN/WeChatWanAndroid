@@ -9,8 +9,9 @@ page {
   position: fixed;
   top: 0px;
   background-color: white;
-  z-index: 99;
   text-align: center;
+  padding-bottom: 5px;
+  z-index: 99;
 }
 
 .top {
@@ -80,4 +81,65 @@ page {
   font-size: small;
   padding: 5px;
   color: #ccc;
+}
+
+.nav-container{
+  width: 100%;
+  display: inline-block;
+  flex-direction: row;
+  flex-wrap: wrap;
+  top: 35px;
+  position: relative;
+  justify-content: flex-start;
+}
+
+
+.nav-container-left {
+  width: fit-content;
+  position: fixed;
+  left: 0;
+  top: 35px;
+}
+
+ .nav-container-right {
+  display: flex;
+  padding-left: 60px;
+  margin-left: 60px;
+  flex-direction: row;
+  align-items: flex-start;
+  flex-wrap: wrap;
+} 
+
+.nav-left {
+  width:60px;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  background-color: #ccc;
+  color: white;
+  font-size: small;
+}
+.nav-left-checked { 
+  width:60px;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  background-color: tomato;
+  color: white;
+  font-size: small;
+}
+
+.nav-right-title{
+  display: block;
+  font-size: medium;
+  color: black;
+}
+
+
+.nav-right-content{
+  display: flex;
+  width:fit-content;
+  padding: 5px 10px 5px 10px;
+  text-align: center;
+  background-color: tomato;
+  color: white;
+  font-size: small;
 }
