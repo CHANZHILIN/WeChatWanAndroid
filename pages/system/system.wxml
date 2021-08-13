@@ -1,5 +1,5 @@
 <!--pages/system/system.wxml-->
-<scroll-view class="scroll-view-official" scroll-x="true" showScrollbar="{{false}}">
+<scroll-view class="scroll-view-tabTitle" scroll-x="true" >
   <!-- tabmenu -->
   <block wx:for="{{systemHeaderList}}" wx:key="index">
     <view class="top">
@@ -12,7 +12,7 @@
 </scroll-view>
 <swiper current='{{currentSelected}}' bindchange="bindChange" style="height:{{contentheight}}px" class="swiper">
   <swiper-item>
-    <scroll-view class='container' scroll-y="{{true}}" showScrollbar="{{false}}">
+    <scroll-view class='container' scroll-y="{{true}}">
       <!-- 体系页 -->
       <block wx:if="{{currentSelected==0}}" wx:for="{{dataArray}}" wx:for-item="articleList"
         wx:for-index="dataArrayIndex" wx:key="dataArrayIndex">
@@ -29,13 +29,13 @@
   <swiper-item>
   <!-- 导航页 -->
   <view class="nav-container">
-  <scroll-view scroll-y="true" class="nav-container-left" showScrollbar="false">
+  <scroll-view scroll-y="true" class="nav-container-left">
     <block wx:for="{{navDataArray}}" wx:for-item="articles" wx:key="index">
             <view class="nav-left{{articles.isCheck?'-checked':''}}" data-index="{{index}}" catchtap="onNavClick">
               {{articles.title}}</view>
           </block>
   </scroll-view>
-  <scroll-view class="nav-container-right" scroll-y="true" showScrollbar="false" bindscroll="scrollListener" scroll-into-view="{{scrollToRightId}}">
+  <scroll-view class="nav-container-right" scroll-y="true" bindscroll="scrollListener" scroll-into-view="{{scrollToRightId}}">
     <view wx:for="{{navDataArray}}" wx:for-item="navData" wx:for-index="navDataArrayIndex"
           wx:key="navDataArrayIndex">
           <text class="nav-right-title" id="{{navData.titleId}}">{{navData.title}}</text>

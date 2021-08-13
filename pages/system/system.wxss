@@ -3,7 +3,14 @@ page {
   background-color: #F5F5F5
 }
 
-.scroll-view-official {
+::-webkit-scrollbar {
+  display:none;
+  width:0;
+  height:0;
+  color:transparent;
+}
+
+.scroll-view-tabTitle {
   width: 100%;
   white-space: nowrap;
   position: fixed;
@@ -11,6 +18,7 @@ page {
   background-color: white;
   text-align: center;
   padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
   z-index: 99;
 }
 
@@ -62,7 +70,7 @@ page {
 }
 .swiper{
   width: 100%;
-  margin-top: 40px;
+  margin-top: 35px;
 }
 .container{
   width: 100%;
@@ -85,67 +93,6 @@ page {
   padding: 5px;
   color: #ccc;
 }
-
-/* .nav-container{
-  width: 100%;
-  display: inline-block;
-  flex-direction: row;
-  flex-wrap: wrap;
-  top: 35px;
-  position: relative;
-  justify-content: flex-start;
-}
-
-
-.nav-container-left {
-  width: fit-content;
-  position: fixed;
-  left: 0;
-  top: 35px;
-}
-
- .nav-container-right {
-  display: flex;
-  padding-left: 60px;
-  margin-left: 60px;
-  flex-direction: row;
-  align-items: flex-start;
-  flex-wrap: wrap;
-} 
-
-.nav-left {
-  width:60px;
-  padding: 5px 10px 5px 10px;
-  text-align: center;
-  background-color: #ccc;
-  color: white;
-  font-size: small;
-}
-.nav-left-checked { 
-  width:60px;
-  padding: 5px 10px 5px 10px;
-  text-align: center;
-  background-color: tomato;
-  color: white;
-  font-size: small;
-}
-
-.nav-right-title{
-  display: block;
-  font-size: medium;
-  color: black;
-}
-
-
-.nav-right-content{
-  display: flex;
-  width:fit-content;
-  padding: 5px 10px 5px 10px;
-  text-align: center;
-  background-color: tomato;
-  color: white;
-  font-size: small;
-} */
 .nav-container{
   width: 100%;
   height: 100%;
@@ -201,6 +148,7 @@ page {
   margin: 5px;
   padding: 5px;
   text-align: center;
+  border-radius: 5px;
   background-color: tomato;
   color: white;
   font-size: small;

@@ -5,7 +5,9 @@ Page({
      * 页面的初始数据
      */
     data: {
+        //TabLayout数据
         systemHeaderList: [],
+        //TabLayout当前选择
         currentSelected: 0,
         // 体系数据
         dataArray: [],
@@ -13,6 +15,7 @@ Page({
         navDataArray: [],
         //导航-左侧栏选择位置
         navCurrentSelected: 0,
+        //内容高度
         contentheight: 0,
         //滑动到导航右侧指定位置
         scrollToRightId: ""
@@ -23,9 +26,6 @@ Page({
         this.setData({
             currentSelected: toughtIndex
         })
-        let id = this.data.systemHeaderList[toughtIndex].id
-        this.getDataList(id)
-
     },
     //绑定swiper
     bindChange(e) {
@@ -68,19 +68,25 @@ Page({
         let scrollTop = event.detail.scrollTop
         let current = that.data.navCurrentSelected
         let data = that.data.navDataArray
-        if (dy< 0) {
-            console.log(scrollTop+'===='+data[current + 1]);
-            //下滑
-            if (scrollTop >= data[current + 1]) {
+        if (dy < 0) { //上滑
+            let nextIndex = current >= data.length ? current : current + 1
+            let downDistance = data[nextIndex].topDistance - 35 //35是marginTop的高度
+            if (scrollTop >= downDistance) {
                 that.setData({
-                    navCurrentSelected: current + 1
+                    ["navDataArray[" + current + "].isCheck"]: false,
+                    ["navDataArray[" + nextIndex + "].isCheck"]: true,
+                    navCurrentSelected: nextIndex
                 })
             }
         } else {
-            //上滑滑
-            if (scrollTop >= data[current - 1]) {
+            //下滑
+            let lastIndex = current == 0 ? current : current - 1
+            let upDistance = data[lastIndex].topDistance
+            if (scrollTop <= upDistance) {
                 that.setData({
-                    navCurrentSelected: current - 1
+                    ["navDataArray[" + current + "].isCheck"]: false,
+                    ["navDataArray[" + lastIndex + "].isCheck"]: true,
+                    navCurrentSelected: lastIndex
                 })
             }
         }
@@ -108,11 +114,13 @@ Page({
                 that.setData({
                     systemHeaderList: list
                 })
-
-                let id = that.data.systemHeaderList[that.data.currentSelected].id
-                that.getDataList(id)
+                that.data.systemHeaderList.forEach((item, index, array) => {
+                    that.getDataList(item.id)
+                })
+                //                 let id = that.data.systemHeaderList[that.data.currentSelected].id
+                //                 that.getDataList(id)
             },
-            (err) => { })
+            (err) => {})
     },
     /**
      * 获取数据
@@ -128,8 +136,8 @@ Page({
                     res.forEach((item, index, array) => {
                         var subName = ""
                         item.children.forEach((childItem, childIndex, childArray) => {
-                            subName = subName + (childIndex + 1) + ":" + childItem.name + "\t"
-                        }),
+                                subName = subName + (childIndex + 1) + ":" + childItem.name + "\t"
+                            }),
                             //添加数据
                             list.push({
                                 title: item.name,
@@ -148,35 +156,36 @@ Page({
                             id: item.cid,
                             title: item.name,
                             titleId: 'nav' + item.cid,
-                            topDistance: 0,
+                            topDistance: 0, //保存title到顶部的距离
                             articles: item.articles
                         })
                     })
                     that.setData({
                         navDataArray: list
                     })
+                    //遍历计算距离
+                    this.data.navDataArray.forEach((item, index, array) => {
+                        wx.createSelectorQuery().select('#' + item.titleId).boundingClientRect(res => { //获取每个title距离顶部高度
+                            that.setData({
+                                ["navDataArray[" + index + "].topDistance"]: res.top
+                            })
+                        }).exec()
+                    })
                 }
+
                 wx.stopPullDownRefresh()
-                //遍历计算距离
-                this.data.navDataArray.forEach((item, index, array) => {
-                    wx.createSelectorQuery().select('#' + item.titleId).boundingClientRect(res => { //获取每个title距离顶部高度
-                        that.setData({
-                            ["navDataArray[" + index + "].topDistance"]: res.top
-                        })
-                    }).exec()
-                })
+
             },
-            (err) => { })
+            (err) => {})
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad: function (options) {
-        let that = this
         this.getOfficicalTitleListData();
         //减号前面是获取当前窗体的高度单位为px，40是头部tab的高度，单位是rpx
-        var contentH = wx.getSystemInfoSync().windowHeight - 40;
+        var contentH = wx.getSystemInfoSync().windowHeight - 35;
         this.setData({
             contentheight: contentH
         })
@@ -215,8 +224,8 @@ Page({
      * 页面相关事件处理函数--监听用户下拉动作
      */
     onPullDownRefresh: function () {
-        let id = this.data.systemHeaderList[this.data.currentSelected].id
-        this.getDataList(id)
+        // let id = this.data.systemHeaderList[this.data.currentSelected].id
+        // this.getDataList(id)
     },
 
     /**
