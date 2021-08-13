@@ -8,6 +8,7 @@ App({
    * 统一请求网络封装
    */
   wxRequest(method, suffixUrl, data, callback, errFun) {
+    let that = this
     console.log("network-request:\n" + "method：" + method + "\n" + "Url：" + this.globalData.base_url + suffixUrl + "\n" + "params：" + data);
     wx.request({
       url: this.globalData.base_url + suffixUrl,
@@ -20,7 +21,7 @@ App({
       dataType: 'json',
       success: function (res) {
         //返回的数据
-        console.log("network-success-response:\n")
+        console.log("network-success-response:"+that.globalData.base_url + suffixUrl+"\n")
         let response = JSON.parse(JSON.stringify(res.data));
         console.log(response)
         if (response.errorCode == 0) {
@@ -33,7 +34,7 @@ App({
         }
       },
       fail: function (err) {
-        console.log("network-error-response:\n")
+        console.log("network-error-response:"+that.globalData.base_url + suffixUrl+"\n")
         let error = JSON.parse(JSON.stringify(err));
         wx.showToast({
           title: '访问网络失败',

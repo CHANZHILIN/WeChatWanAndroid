@@ -12,12 +12,20 @@ Page({
     //当前页码
     pageNum: 0,
     //总页数
-    totalPageNume:0
+    totalPageNume:0,
+    //banner数据
+    bannerList:[],
+    //是否显示指示器
+    indicatorDots: false,
+    autoplay: true,
+    interval: 5000,
+    duration: 500
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    this.getBanner()
     this.getData(true)
   },
 
@@ -31,6 +39,30 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+  },
+  /**
+   * banner数据
+   */
+  getBanner:function(){
+    let suffixUrl = '/banner/json'
+    app.wxRequest("GET", suffixUrl, null,
+    (res) => {
+        let list = new Array()
+        res.forEach((item, index, array) => {
+          //添加数据
+    list.push({
+      background:item.imagePath,
+      desc:item.desc,
+      isVisible:item.isVisible,
+      title:item.title,
+      url:item.url
+    })
+        })
+        this.setData({
+          bannerList:list
+        })
+    },
+    (err) => { })
   },
   /**
    * 获取数据
@@ -74,6 +106,17 @@ Page({
         (err) => { })
   },
 
+  /**
+   * 点击banner
+   */
+  onBannerClick:function(event){ 
+    var toughIndex = event.currentTarget.dataset.index
+    if (this.data.bannerList[toughIndex].url != null) {
+      wx.navigateTo({
+        url: '../web_view/webView?artUrl='+this.data.bannerList[toughIndex].url
+      })
+    }
+  },
   /**
    * 点击时事件
    */
