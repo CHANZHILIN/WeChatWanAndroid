@@ -1,2 +1,34 @@
-<!--pages/project/project.wxml-->
-<text>pages/project/project.wxml</text>
+<!--pages/official_account/official_account.wxml-->
+<scroll-view class="scroll-view-official" scroll-x="true" showScrollbar="{{false}}" scroll-into-view="{{toView}}">
+  <block wx:for="{{officialList}}" wx:key="index">
+    <view class="top" id="{{item.viewId}}">
+      <view class="top-name{{currentSelected==index?'-checked':''}}" data-index="{{index}}" catchtap="onOfficialClick">
+        {{item.name}}</view>
+    </view>
+  </block>
+</scroll-view>
+
+<scroll-view class="scroll-view" scroll-y="{{true}}" refresher-enabled="true" refresher-triggered="{{isPull}}" style="height:{{contentheight}}px"
+      bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
+<swiper current='{{currentSelected}}' bindchange="bindChange"  class="swiper" style="height:{{totalHeight}}px">
+  <swiper-item wx:for="{{officialList}}" wx:key="index">
+      <block wx:for="{{dataArray}}" wx:for-item="articleList" wx:for-index="dataArrayIndex" wx:key="dataArrayIndex">
+        <block wx:for="{{articleList}}" wx:key="index">
+          <view class="medium" id="medium" bindtap="onItemClick" data-index="{{index}}" data-array="{{dataArrayIndex}}">
+          <image class="medium-image" src="{{item.picSrc}}"/>
+          <view class="medium-right">
+            <text class="medium-setTopNew" wx:if="{{item.isNew}}">新</text>
+            <text class="medium-author">{{item.author}}</text>
+            <text class="medium-time">{{item.time}}</text>
+            <view class='text-content'>{{item.content}}</view>
+            <view class='text-desc'>{{item.desc}}</view>           
+          <view class='text-project-url' catchtap="onProjectUrlClick" data-link="{{item.projectUrl}}">{{item.projectUrl}}</view>
+            </view>
+          </view>
+        </block>
+      </block>
+  </swiper-item>
+
+</swiper>
+
+</scroll-view>

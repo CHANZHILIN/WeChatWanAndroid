@@ -13,8 +13,15 @@ page {
 .top {
   display: inline-block;
 }
-
-.top-name-underline {
+.top-name{
+  width: fit-content;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
+  background-color: #ccc;
+  font-size: medium;
+  color: white;
+}
+.top-name-checked{
   width: fit-content;
   padding: 5px 5px 5px 5px;
   text-align: center;
@@ -23,26 +30,21 @@ page {
   font-size: medium;
 }
 
-.top-name-nounderline {
-  width: fit-content;
-  padding: 5px 5px 5px 5px;
-  text-align: center;
-  background-color: #ccc;
-  font-size: medium;
-  color: white;
-}
-
-.container{
+.swiper{
   width: 100%;
-  margin-top: 40px;
+  align-content: center;
 }
 
+.scroll-view{
+  width: 100%;
+  margin-top: 35px;
+}
 .medium {
   width: 100%;
   padding: 10px;
+  position: relative;
   border-bottom: 1px solid #F5F5F5;
   background-color: #FFFFFF;
-  position: relative;
 }
 
 .medium-setTop {
@@ -78,8 +80,8 @@ page {
 
 .text-content {
   font-size: large;
-  padding: 5px;
-  margin-right: 10px;
+  margin: 10px;
+  width: auto;
 }
 
 .text-original {

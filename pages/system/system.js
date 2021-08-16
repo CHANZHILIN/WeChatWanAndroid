@@ -11,6 +11,7 @@ Page({
         currentSelected: 0,
         // 体系数据
         dataArray: [],
+        systemConentArray:[],
         //导航数据
         navDataArray: [],
         //导航-左侧栏选择位置
@@ -47,6 +48,18 @@ Page({
             navCurrentSelected: toughtIndex,
             scrollToRightId: this.data.navDataArray[toughtIndex].titleId
         })
+    },
+    /**
+     * 点击体系item
+     */
+    onItemClick: function (event) {
+        let index = event.currentTarget.dataset.link
+        let array = this.data.dataArray[0][index].titleArray
+        if (array != null) {
+            wx.navigateTo({
+                url: './SystemInside?artUrl=' + JSON.stringify(array)
+            })
+        }
     },
     /**
      * 右侧item点击
@@ -117,10 +130,8 @@ Page({
                 that.data.systemHeaderList.forEach((item, index, array) => {
                     that.getDataList(item.id)
                 })
-                //                 let id = that.data.systemHeaderList[that.data.currentSelected].id
-                //                 that.getDataList(id)
             },
-            (err) => {})
+            (err) => { })
     },
     /**
      * 获取数据
@@ -132,21 +143,25 @@ Page({
         app.wxRequest("GET", suffixUrl, null,
             (res) => {
                 let list = new Array()
+               
                 if (type == 'system') { //体系数据
                     res.forEach((item, index, array) => {
                         var subName = ""
                         item.children.forEach((childItem, childIndex, childArray) => {
-                                subName = subName + (childIndex + 1) + ":" + childItem.name + "\t"
-                            }),
+                        
+                            subName = subName + (childIndex + 1) + ":" + childItem.name + "\t"
+                        }),
                             //添加数据
                             list.push({
+                                id: item.id,
                                 title: item.name,
-                                content: subName
+                                content: subName,
+                                titleArray: item.children
                             })
                     })
 
                     that.setData({
-                        ["dataArray[0]"]: list
+                        ["dataArray[0]"]: list,
                     })
                 } else { //导航数据
                     res.forEach((item, index, array) => {
@@ -176,7 +191,7 @@ Page({
                 wx.stopPullDownRefresh()
 
             },
-            (err) => {})
+            (err) => { })
     },
 
     /**

@@ -6,6 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    titleArray:[],
     toView: "",
     officialList: [],
     currentSelected: 0,
@@ -33,6 +34,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
+    that.setData({
+      titleArray: JSON.parse(options.artUrl),
+    })
     this.getOfficicalTitleListData()
     //减号前面是获取当前窗体的高度单位为px
     var contentH = wx.getSystemInfoSync().windowHeight - 35;
@@ -58,48 +63,42 @@ Page({
 
   },
   /**
-   * 项目分类列表数据
+   * 公众号作者列表数据
    */
   getOfficicalTitleListData: function () {
-    let that = this
-    let suffixUrl = '/project/tree/json'
-    app.wxRequest("GET", suffixUrl, null,
-      (res) => {
-        let list = new Array()
-        res.forEach((item, index, array) => {
+ let list = new Array()
+
+        this.data.titleArray.forEach((item, index, array) => {
           list.push({
             id: item.id,
-            viewId: 'project_' + item.id,
-            courseId: item.courseId,
+            viewId: 'official_' + item.id,
             name: item.name,
             isCheck: index == 0 ? true : false
           })
         })
 
-        that.setData({
+        this.setData({
           officialList: list
         })
 
-        let id = that.data.officialList[that.data.currentSelected].id
-        that.getDataList(true, id)
-        that.setData({
-          toView: that.data.officialList[that.data.currentSelected].viewId
+        let id = this.data.titleArray[this.data.currentSelected].id
+        this.getDataList(true, id)
+        this.setData({
+          toView: this.data.officialList[this.data.currentSelected].viewId
         })
-      },
-      (err) => { })
   },
 
   /**
-* 获取项目数据
+* 获取公众号数据
 * @param {是否刷新} isRefresh 
-* @param {项目id} id
+* @param {公众号id} id
 */
   getDataList: function (isRefresh, id) {
     let that = this
     let currentPageNum = isRefresh ? 0 : that.data.pageNum + 1
     //大于最大页码时候 返回
     if (currentPageNum > that.data.totalPageNume) return
-    let suffixUrl = '/project/list/' + currentPageNum + '/json?cid=' + id
+    let suffixUrl = '/article/list/'+currentPageNum+'/json?cid='+id
     app.wxRequest("GET", suffixUrl, null,
       (res) => {
         let list = new Array()
@@ -108,9 +107,7 @@ Page({
           list.push({
             id: item.id,
             author: item.author != "" ? item.author : item.shareUser,
-            desc: item.desc,
-            picSrc: item.envelopePic,
-            projectUrl: item.projectLink,
+            isSetTop: false,
             isNew: item.fresh,
             time: item.niceDate,
             content: item.title,
@@ -151,15 +148,8 @@ Page({
     var toughIndex = event.currentTarget.dataset.index
     if (this.data.dataArray[arrayIndex][toughIndex].link != null) {
       wx.navigateTo({
+        // url: this.data.dataArray[arrayIndex][toughIndex].link,
         url: '../web_view/webView?artUrl=' + this.data.dataArray[arrayIndex][toughIndex].link
-      })
-    }
-  },
-  onProjectUrlClick:function(event){
-    var link = event.currentTarget.dataset.link
-    if(link != null){
-      wx.navigateTo({
-        url: '../web_view/webView?artUrl=' + link
       })
     }
   },

@@ -14,30 +14,48 @@ Page({
     //当前页码
     pageNum: 0,
     //总页数
-    totalPageNume: 0
+    totalPageNume: 0,
+    //内容高度
+    contentheight: 0,
+    totalHeight: 0,
+    isPull: false
   },
+  //绑定swiper
+  bindChange(e) {
+    let position = e.detail.current
+    this.setData({
+      currentSelected: position
+    })
 
+    let id = this.data.officialList[position].id
+    this.getDataList(true, id)
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     this.getOfficicalTitleListData()
+    //减号前面是获取当前窗体的高度单位为px
+    var contentH = wx.getSystemInfoSync().windowHeight - 35;
+    this.setData({
+      contentheight: contentH
+    })
   },
   //头部导航点击选中
   onOfficialClick: function (event) {
     var toughtIndex = event.currentTarget.dataset.index
-    var oldSelected = this.data.currentSelected
+    // var oldSelected = this.data.currentSelected
 
 
     let moveToMiddleIndex = toughtIndex - 2 < 0 ? 0 : toughtIndex - 2
     this.setData({
-      ["officialList[" + oldSelected + "].isCheck"]: false,
-      ["officialList[" + toughtIndex + "].isCheck"]: true,
+      // ["officialList[" + oldSelected + "].isCheck"]: false,
+      // ["officialList[" + toughtIndex + "].isCheck"]: true,
       currentSelected: toughtIndex,
       toView: this.data.officialList[moveToMiddleIndex].viewId
     })
-    let id = this.data.officialList[toughtIndex].id
-    this.getDataList(true, id)
+    // let id = this.data.officialList[toughtIndex].id
+    // this.getDataList(true, id)
 
   },
   /**
@@ -103,14 +121,24 @@ Page({
         if (isRefresh) {
           that.setData({
             dataArray: [],
-            totalPageNume: res.pageCount
+            totalPageNume: res.pageCount,
+            totalHeight: 0
           })
         }
         that.setData({
           ["dataArray[" + currentPageNum + "]"]: list,
-          pageNum: currentPageNum
+          pageNum: currentPageNum,
+          isPull: false
         })
-        wx.stopPullDownRefresh()
+        //遍历计算距离
+        list.forEach((item, index, array) => {
+          wx.createSelectorQuery().select('#medium').boundingClientRect(res => { //获取每个title距离顶部高度
+            that.setData({
+              totalHeight: that.data.totalHeight + res.height
+            })
+          }).exec()
+
+        })
       },
       (err) => { })
   },
@@ -135,7 +163,6 @@ Page({
     var toughIndex = event.currentTarget.dataset.index
     this.setData({
       ["dataArray[" + arrayIndex + "][" + toughIndex + "].isFocus"]: !this.data.dataArray[arrayIndex][toughIndex].isFocus
-      // ['articleList[' + toughIndex + '].isFocus']: !this.data.articleList[toughIndex].isFocus
     })
 
   },
@@ -172,10 +199,23 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
+
+  },
+  /**
+   * 刷新
+   */
+  refresh: function () {
+    let that = this
+    that.setData({
+      isPull: true
+    })
     let id = this.data.officialList[this.data.currentSelected].id
     this.getDataList(true, id)
+
     setTimeout(() => {
-      wx.stopPullDownRefresh()
+      that.setData({
+        isPull: false
+      })
     }, 5000)
   },
 
@@ -183,10 +223,12 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
+  },
+  loadMore: function () {
     let id = this.data.officialList[this.data.currentSelected].id
     this.getDataList(false, id)
-  },
-
+  }
+  ,
   /**
    * 用户点击右上角分享
    */
