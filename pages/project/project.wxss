@@ -114,3 +114,10 @@ page {
   margin: 10px 10px 10px 0px;
   width: auto;
 }
+
+.scroll-view-official ::-webkit-scrollbar {
+  display:none;
+  width:0;
+  height:0;
+  color:transparent;
+}

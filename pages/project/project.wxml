@@ -6,7 +6,6 @@
     </view>
   </block>
 </scroll-view>
-
 <scroll-view class="scroll-view" scroll-y="{{true}}" refresher-enabled="true" refresher-triggered="{{isPull}}" style="height:{{contentheight}}px"
       bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
 <swiper current='{{currentSelected}}' bindchange="bindChange"  class="swiper" style="height:{{totalHeight}}px">
