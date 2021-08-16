@@ -2,7 +2,7 @@
   "usingComponents": {},
   "enablePullDownRefresh": true,
   "onReachBottomDistance": 20,
-  "backgroundColorTop": "#72B9E8",
-  "backgroundColorBottom": "#72B9E8",
+  "backgroundColorTop": "#FF6347",
+  "backgroundColorBottom": "#FF6347",
   "backgroundTextStyle": "dark"
 }

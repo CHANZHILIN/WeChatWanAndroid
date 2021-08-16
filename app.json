@@ -13,36 +13,36 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "玩Android",
     "navigationBarTextStyle": "black",
-    "backgroundColorTop": "#72B9E8",
-    "backgroundColorBottom": "#72B9E8"
+    "backgroundColorTop": "#FF6347",
+    "backgroundColorBottom": "#FF6347"
   },
   "tabBar": {
     "color": "#ccc",
-    "selectedColor": "#72B9E8",
+    "selectedColor": "#FF6347",
     "list": [
       {
         "pagePath": "pages/index/index",
         "text": "首页",
-        "iconPath": "/images/hotest.png",
-        "selectedIconPath": "/images/hotest_on.png"
+        "iconPath": "/images/home.png",
+        "selectedIconPath": "/images/home_on.png"
       },
       {
         "pagePath": "pages/official_account/official_account",
         "text": "公众号",
-        "iconPath": "/images/latest.png",
-        "selectedIconPath": "/images/lastest_on.png"
+        "iconPath": "/images/official.png",
+        "selectedIconPath": "/images/official_on.png"
       },
       {
         "pagePath": "pages/system/system",
         "text": "体系",
-        "iconPath": "/images/node.png",
-        "selectedIconPath": "/images/node_on.png"
+        "iconPath": "/images/system.png",
+        "selectedIconPath": "/images/system_on.png"
       },
       {
         "pagePath": "pages/project/project",
         "text": "项目",
-        "iconPath": "/images/node.png",
-        "selectedIconPath": "/images/node_on.png"
+        "iconPath": "/images/project.png",
+        "selectedIconPath": "/images/project_on.png"
       }
     ]
   },

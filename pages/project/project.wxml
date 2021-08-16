@@ -1,4 +1,3 @@
-<!--pages/official_account/official_account.wxml-->
 <scroll-view class="scroll-view-official" scroll-x="true" showScrollbar="{{false}}" scroll-into-view="{{toView}}">
   <block wx:for="{{officialList}}" wx:key="index">
     <view class="top" id="{{item.viewId}}">
