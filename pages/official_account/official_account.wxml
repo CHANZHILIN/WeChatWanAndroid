@@ -8,13 +8,16 @@
   </block>
 </scroll-view>
 
-<scroll-view class="scroll-view" scroll-y="{{true}}" refresher-enabled="true" refresher-triggered="{{isPull}}" style="height:{{contentheight}}px"
-      bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
-<swiper current='{{currentSelected}}' bindchange="bindChange"  class="swiper" style="height:{{totalHeight}}px">
+
+
+<swiper current='{{currentSelected}}' bindchange="bindChange"  class="swiper" >
+
   <swiper-item wx:for="{{officialList}}" wx:key="index">
+    <scroll-view class="scroll-view" scroll-y="{{true}}" refresher-enabled="true" refresher-triggered="{{isPull}}" 
+      bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
       <block wx:for="{{dataArray}}" wx:for-item="articleList" wx:for-index="dataArrayIndex" wx:key="dataArrayIndex">
         <block wx:for="{{articleList}}" wx:key="index">
-          <view class="medium" id="medium" bindtap="onItemClick" data-index="{{index}}" data-array="{{dataArrayIndex}}">
+          <view class="medium" id="medium{{item.id}}" bindtap="onItemClick" data-index="{{index}}" data-array="{{dataArrayIndex}}">
             <text class="medium-setTop" wx:if="{{item.isSetTop}}">置顶</text>
             <text class="medium-setTopNew" wx:if="{{item.isNew}}">新</text>
             <text class="medium-author">{{item.author}}</text>
@@ -29,8 +32,8 @@
           </view>
         </block>
       </block>
+      
+</scroll-view>
   </swiper-item>
 
 </swiper>
-
-</scroll-view>

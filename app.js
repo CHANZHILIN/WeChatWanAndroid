@@ -8,6 +8,10 @@ App({
    * 统一请求网络封装
    */
   wxRequest(method, suffixUrl, data, callback, errFun) {
+   wx.showLoading({
+     title: '数据加载中...',
+   })
+     
     let that = this
     console.log("network-request:\n" + "method：" + method + "\n" + "Url：" + this.globalData.base_url + suffixUrl + "\n" + "params：" + data);
     wx.request({
@@ -20,6 +24,9 @@ App({
       },
       dataType: 'json',
       success: function (res) {
+        wx.hideLoading({
+          title: '数据加载中...',
+        })
         //返回的数据
         console.log("network-success-response:"+that.globalData.base_url + suffixUrl+"\n")
         let response = JSON.parse(JSON.stringify(res.data));
@@ -34,6 +41,9 @@ App({
         }
       },
       fail: function (err) {
+        wx.hideLoading({
+          title: '数据加载中...',
+        })
         console.log("network-error-response:"+that.globalData.base_url + suffixUrl+"\n")
         let error = JSON.parse(JSON.stringify(err));
         wx.showToast({

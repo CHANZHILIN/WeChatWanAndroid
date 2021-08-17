@@ -33,12 +33,14 @@ page {
 
 .swiper{
   width: 100%;
+  height: 100vh;
+  margin-top: 35px;
   align-content: center;
 }
 
 .scroll-view{
   width: 100%;
-  margin-top: 35px;
+  height: 100vh;
 }
 .medium {
   width: 100%;
@@ -96,4 +98,12 @@ page {
   margin-right: 15px;
   width: 25px;
   height: 25px;
+}
+
+
+.scroll-view-official ::-webkit-scrollbar {
+  display:none;
+  width:0;
+  height:0;
+  color:transparent;
 }

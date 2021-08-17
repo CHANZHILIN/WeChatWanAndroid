@@ -15,16 +15,15 @@ Page({
     pageNum: 0,
     //总页数
     totalPageNume: 0,
-    //内容高度
-    contentheight: 0,
-    totalHeight: 0,
     isPull: false
   },
   //绑定swiper
   bindChange(e) {
     let position = e.detail.current
+    let moveToMiddleIndex = position - 2 < 0 ? 0 : position - 2
     this.setData({
-      currentSelected: position
+      currentSelected: position,
+      toView: this.data.officialList[moveToMiddleIndex].viewId
     })
 
     let id = this.data.officialList[position].id
@@ -39,27 +38,16 @@ Page({
       titleArray: JSON.parse(options.artUrl),
     })
     this.getOfficicalTitleListData()
-    //减号前面是获取当前窗体的高度单位为px
-    var contentH = wx.getSystemInfoSync().windowHeight - 35;
-    this.setData({
-      contentheight: contentH
-    })
+  
   },
   //头部导航点击选中
   onOfficialClick: function (event) {
     var toughtIndex = event.currentTarget.dataset.index
-    // var oldSelected = this.data.currentSelected
-
-
     let moveToMiddleIndex = toughtIndex - 2 < 0 ? 0 : toughtIndex - 2
     this.setData({
-      // ["officialList[" + oldSelected + "].isCheck"]: false,
-      // ["officialList[" + toughtIndex + "].isCheck"]: true,
       currentSelected: toughtIndex,
       toView: this.data.officialList[moveToMiddleIndex].viewId
     })
-    // let id = this.data.officialList[toughtIndex].id
-    // this.getDataList(true, id)
 
   },
   /**
@@ -83,9 +71,6 @@ Page({
 
         let id = this.data.titleArray[this.data.currentSelected].id
         this.getDataList(true, id)
-        this.setData({
-          toView: this.data.officialList[this.data.currentSelected].viewId
-        })
   },
 
   /**
@@ -97,7 +82,11 @@ Page({
     let that = this
     let currentPageNum = isRefresh ? 0 : that.data.pageNum + 1
     //大于最大页码时候 返回
-    if (currentPageNum > that.data.totalPageNume) return
+    if (currentPageNum > that.data.totalPageNume) {
+      wx.showToast({
+        title: '到底啦~',
+      })
+      return}
     let suffixUrl = '/article/list/'+currentPageNum+'/json?cid='+id
     app.wxRequest("GET", suffixUrl, null,
       (res) => {
@@ -119,23 +108,13 @@ Page({
         if (isRefresh) {
           that.setData({
             dataArray: [],
-            totalPageNume: res.pageCount,
-            totalHeight: 0
+            totalPageNume: res.pageCount
           })
         }
         that.setData({
           ["dataArray[" + currentPageNum + "]"]: list,
           pageNum: currentPageNum,
           isPull: false
-        })
-        //遍历计算距离
-        list.forEach((item, index, array) => {
-          wx.createSelectorQuery().select('#medium').boundingClientRect(res => { //获取每个title距离顶部高度
-            that.setData({
-              totalHeight: that.data.totalHeight + res.height
-            })
-          }).exec()
-
         })
       },
       (err) => { })
@@ -148,7 +127,6 @@ Page({
     var toughIndex = event.currentTarget.dataset.index
     if (this.data.dataArray[arrayIndex][toughIndex].link != null) {
       wx.navigateTo({
-        // url: this.data.dataArray[arrayIndex][toughIndex].link,
         url: '../web_view/webView?artUrl=' + this.data.dataArray[arrayIndex][toughIndex].link
       })
     }
