@@ -1,5 +1,5 @@
 <!--pages/official_account/official_account.wxml-->
-<scroll-view class="scroll-view-official" scroll-x="true" showScrollbar="{{false}}" scroll-into-view="{{toView}}">
+<scroll-view class="scroll-view-official" scroll-x="true" showScrollbar="{{false}}" scroll-with-animation="true" scroll-into-view="{{toView}}">
   <block wx:for="{{officialList}}" wx:key="index">
     <view class="top" id="{{item.viewId}}">
       <view class="top-name{{currentSelected==index?'-checked':''}}" data-index="{{index}}" catchtap="onOfficialClick">
@@ -13,9 +13,9 @@
 <swiper current='{{currentSelected}}' bindchange="bindChange"  class="swiper" >
 
   <swiper-item wx:for="{{officialList}}" wx:key="index">
-    <scroll-view class="scroll-view" scroll-y="{{true}}" refresher-enabled="true" refresher-triggered="{{isPull}}" 
+    <scroll-view class="scroll-view" scroll-y="{{true}}" refresher-enabled="true" refresher-triggered="{{item.isPull}}" 
       bindrefresherrefresh="refresh" bindscrolltolower="loadMore">
-      <block wx:for="{{dataArray}}" wx:for-item="articleList" wx:for-index="dataArrayIndex" wx:key="dataArrayIndex">
+      <block wx:for="{{item.dataArray}}" wx:for-item="articleList" wx:for-index="dataArrayIndex" wx:key="dataArrayIndex">
         <block wx:for="{{articleList}}" wx:key="index">
           <view class="medium" id="medium{{item.id}}" bindtap="onItemClick" data-index="{{index}}" data-array="{{dataArrayIndex}}">
             <text class="medium-setTop" wx:if="{{item.isSetTop}}">置顶</text>

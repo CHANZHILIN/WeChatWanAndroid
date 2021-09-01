@@ -13,21 +13,26 @@ page {
 .top {
   display: inline-block;
 }
-.top-name{
+.top-name {
   width: fit-content;
   padding: 5px 5px 5px 5px;
   text-align: center;
-  background-color: #ccc;
+  background-color: white;
   font-size: medium;
-  color: white;
+  border-top: rgba(204, 204, 204, 0.726) solid 1px;
+  border-bottom: rgba(204, 204, 204, 0.726) solid 1px;
+  color: #ccc;
 }
-.top-name-checked{
+
+.top-name-checked {
   width: fit-content;
   padding: 5px 5px 5px 5px;
   text-align: center;
-  background-color: tomato;
-  color: white;
+  background-color: white;
+  border-top: rgba(204, 204, 204, 0.726) solid 1px;
+  border-bottom: tomato solid 2px;
   font-size: medium;
+  color: tomato;
 }
 
 .swiper{

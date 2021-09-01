@@ -11,7 +11,7 @@ Page({
         currentSelected: 0,
         // 体系数据
         dataArray: [],
-        systemConentArray:[],
+        systemConentArray: [],
         //导航数据
         navDataArray: [],
         //导航-左侧栏选择位置
@@ -19,7 +19,9 @@ Page({
         //内容高度
         contentheight: 0,
         //滑动到导航右侧指定位置
-        scrollToRightId: ""
+        scrollToRightId: "",
+        isSystemFristLoad: true,
+        isNavFirstLoad: true
     },
     //头部导航点击选中
     onSystemHeaderClick: function (event) {
@@ -34,9 +36,10 @@ Page({
         this.setData({
             currentSelected: position
         })
-
-        let id = this.data.systemHeaderList[position].id
-        this.getDataList(id)
+        if ((position == 0 && this.data.isSystemFristLoad == true) || (position == 1 && this.data.isNavFirstLoad == true)) {
+            let id = this.data.systemHeaderList[position].id
+            this.getDataList(id)
+        }
     },
     //导航页-左侧导航选择
     onNavClick: function (event) {
@@ -55,9 +58,16 @@ Page({
     onItemClick: function (event) {
         let index = event.currentTarget.dataset.link
         let array = this.data.dataArray[0][index].titleArray
+        let arrayList = new Array
+        array.forEach((item, index, array) => {
+            arrayList.push({
+                id:item.id,
+                name:item.name.replace(/&/g,"-")
+            })
+        })
         if (array != null) {
             wx.navigateTo({
-                url: './SystemInside?artUrl=' + JSON.stringify(array)
+                url: './SystemInside?artUrl=' + JSON.stringify(arrayList)
             })
         }
     },
@@ -143,18 +153,18 @@ Page({
         app.wxRequest("GET", suffixUrl, null,
             (res) => {
                 let list = new Array()
-               
+
                 if (type == 'system') { //体系数据
                     res.forEach((item, index, array) => {
                         var subName = ""
                         item.children.forEach((childItem, childIndex, childArray) => {
-                        
-                            subName = subName + (childIndex + 1) + ":" + childItem.name + "\t"
+
+                            subName = subName + (childIndex + 1) + ":" + childItem.name.replace(/&/g,"-") + "\t"
                         }),
                             //添加数据
                             list.push({
                                 id: item.id,
-                                title: item.name,
+                                title: item.name.replace(/&/g,"-"),
                                 content: subName,
                                 titleArray: item.children
                             })
@@ -162,6 +172,7 @@ Page({
 
                     that.setData({
                         ["dataArray[0]"]: list,
+                        isSystemFristLoad:false
                     })
                 } else { //导航数据
                     res.forEach((item, index, array) => {
@@ -176,7 +187,8 @@ Page({
                         })
                     })
                     that.setData({
-                        navDataArray: list
+                        navDataArray: list,
+                        isNavFirstLoad:false
                     })
                     //遍历计算距离
                     this.data.navDataArray.forEach((item, index, array) => {

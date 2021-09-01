@@ -7,27 +7,21 @@ Page({
    */
   data: {
     toView: "",
-    officialList: [],
-    currentSelected: 0,
-    dataArray: [],
-    //当前页码
-    pageNum: 0,
-    //总页数
-    totalPageNume: 0,
-    isPull: false
+    tabProjectList: [],
+    currentSelected: 0
   },
   //绑定swiper
   bindChange(e) {
     let position = e.detail.current
-    
     let moveToMiddleIndex = position - 2 < 0 ? 0 : position - 2
     this.setData({
       currentSelected: position,
-      toView: this.data.officialList[moveToMiddleIndex].viewId
+      toView: this.data.tabProjectList[moveToMiddleIndex].viewId
     })
-
-    let id = this.data.officialList[position].id
-    this.getDataList(true, id)
+    if (this.data.tabProjectList[position].isFirstLoad == true) {
+      let id = this.data.tabProjectList[position].id
+      this.getDataList(true, id)
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -41,7 +35,7 @@ Page({
     let moveToMiddleIndex = toughtIndex - 2 < 0 ? 0 : toughtIndex - 2
     this.setData({
       currentSelected: toughtIndex,
-      toView: this.data.officialList[moveToMiddleIndex].viewId
+      toView: this.data.tabProjectList[moveToMiddleIndex].viewId
     })
 
   },
@@ -53,22 +47,25 @@ Page({
     let suffixUrl = '/project/tree/json'
     app.wxRequest("GET", suffixUrl, null,
       (res) => {
-        let list = new Array()
+        let tabList = new Array()
         res.forEach((item, index, array) => {
-          list.push({
+          tabList.push({
             id: item.id,
             viewId: 'project_' + item.id,
             courseId: item.courseId,
             name: item.name,
-            isCheck: index == 0 ? true : false
+            isFirstLoad: true, //是否第一次加载
+            totalPageNum: 0,  //总页数
+            currentPageNum: 0, //当前页
+            isPull: false,//是否刷新
+            dataArray: [] //存放每一页的数据
           })
         })
-
         that.setData({
-          officialList: list
+          currentSelected: 0,
+          tabProjectList: tabList
         })
-
-        let id = that.data.officialList[that.data.currentSelected].id
+        let id = that.data.tabProjectList[that.data.currentSelected].id
         that.getDataList(true, id)
       },
       (err) => { })
@@ -81,9 +78,9 @@ Page({
 */
   getDataList: function (isRefresh, id) {
     let that = this
-    let currentPageNum = isRefresh ? 0 : that.data.pageNum + 1
+    let currentPageNum = isRefresh ? 0 : (that.data.tabProjectList[that.data.currentSelected].currentPageNum + 1)
     //大于最大页码时候 返回
-    if (currentPageNum > that.data.totalPageNume) {
+    if (currentPageNum > that.data.tabProjectList[that.data.currentSelected].totalPageNum) {
       wx.showToast({
         title: '到底了~',
       })
@@ -111,17 +108,16 @@ Page({
         })
         if (isRefresh) {
           that.setData({
-            dataArray: [],
-            totalPageNume: res.pageCount
+            ["tabProjectList[" + that.data.currentSelected + "].dataArray"]: [],
+            ["tabProjectList[" + that.data.currentSelected + "].totalPageNum"]: res.pageCount
           })
         }
         that.setData({
-          ["dataArray[" + currentPageNum + "]"]: list,
-          pageNum: currentPageNum,
-          isPull: false
+          ["tabProjectList[" + that.data.currentSelected + "].dataArray[" + currentPageNum + "]"]: list,
+          ["tabProjectList[" + that.data.currentSelected + "].currentPageNum"]: currentPageNum,
+          ["tabProjectList[" + that.data.currentSelected + "].isPull"]: false,
+          ["tabProjectList[" + that.data.currentSelected + "].isFirstLoad"]: false
         })
-
-   
       },
       (err) => { })
   },
@@ -131,12 +127,15 @@ Page({
   onItemClick: function (event) {
     var arrayIndex = event.currentTarget.dataset.array
     var toughIndex = event.currentTarget.dataset.index
-    if (this.data.dataArray[arrayIndex][toughIndex].link != null) {
+    if (this.data.tabProjectList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].link != null) {
       wx.navigateTo({
-        url: '../web_view/webView?artUrl=' + this.data.dataArray[arrayIndex][toughIndex].link
+        url: '../web_view/webView?artUrl=' + this.data.tabProjectList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].link
       })
     }
   },
+  /**
+   * 项目链接点击
+   */
   onProjectUrlClick: function (event) {
     var link = event.currentTarget.dataset.link
     if (link != null) {
@@ -144,17 +143,6 @@ Page({
         url: '../web_view/webView?artUrl=' + link
       })
     }
-  },
-  /**
-   * 点击收藏
-   */
-  onFocus: function (event) {
-    var arrayIndex = event.currentTarget.dataset.array
-    var toughIndex = event.currentTarget.dataset.index
-    this.setData({
-      ["dataArray[" + arrayIndex + "][" + toughIndex + "].isFocus"]: !this.data.dataArray[arrayIndex][toughIndex].isFocus
-    })
-
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -196,15 +184,16 @@ Page({
    */
   refresh: function () {
     let that = this
+    let current = that.data.currentSelected
     that.setData({
-      isPull: true
+      ["tabProjectList[" + current + "].isPull"]: true
     })
-    let id = this.data.officialList[this.data.currentSelected].id
-    this.getDataList(true, id)
+    let id = that.data.tabProjectList[current].id
+    that.getDataList(true, id)
 
     setTimeout(() => {
       that.setData({
-        isPull: false
+        ["tabProjectList[" + that.data.currentSelected + "].isPull"]: false
       })
     }, 5000)
   },
@@ -215,7 +204,7 @@ Page({
   onReachBottom: function () {
   },
   loadMore: function () {
-    let id = this.data.officialList[this.data.currentSelected].id
+    let id = this.data.tabProjectList[this.data.currentSelected].id
     this.getDataList(false, id)
   }
   ,

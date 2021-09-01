@@ -9,13 +9,7 @@ Page({
     titleArray:[],
     toView: "",
     officialList: [],
-    currentSelected: 0,
-    dataArray: [],
-    //当前页码
-    pageNum: 0,
-    //总页数
-    totalPageNume: 0,
-    isPull: false
+    currentSelected: 0
   },
   //绑定swiper
   bindChange(e) {
@@ -25,15 +19,17 @@ Page({
       currentSelected: position,
       toView: this.data.officialList[moveToMiddleIndex].viewId
     })
-
-    let id = this.data.officialList[position].id
-    this.getDataList(true, id)
+    if (this.data.officialList[position].isFirstLoad == true) {
+      let id = this.data.officialList[position].id
+      this.getDataList(true, id)
+    }
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     var that = this
+    console.log(options.artUrl);
     that.setData({
       titleArray: JSON.parse(options.artUrl),
     })
@@ -61,7 +57,11 @@ Page({
             id: item.id,
             viewId: 'official_' + item.id,
             name: item.name,
-            isCheck: index == 0 ? true : false
+             isFirstLoad: true, //是否第一次加载
+            totalPageNum: 0,  //总页数
+            currentPageNum: 0, //当前页
+            isPull: false,//是否刷新
+            dataArray: [] //存放每一页的数据
           })
         })
 
@@ -80,9 +80,9 @@ Page({
 */
   getDataList: function (isRefresh, id) {
     let that = this
-    let currentPageNum = isRefresh ? 0 : that.data.pageNum + 1
+    let currentPageNum = isRefresh ? 0 : (that.data.officialList[that.data.currentSelected].currentPageNum + 1)
     //大于最大页码时候 返回
-    if (currentPageNum > that.data.totalPageNume) {
+    if (currentPageNum > that.data.officialList[that.data.currentSelected].totalPageNum) {
       wx.showToast({
         title: '到底啦~',
       })
@@ -107,14 +107,15 @@ Page({
         })
         if (isRefresh) {
           that.setData({
-            dataArray: [],
-            totalPageNume: res.pageCount
+            ["officialList[" + that.data.currentSelected + "].dataArray"]: [],
+            ["officialList[" + that.data.currentSelected + "].totalPageNum"]: res.pageCount
           })
         }
         that.setData({
-          ["dataArray[" + currentPageNum + "]"]: list,
-          pageNum: currentPageNum,
-          isPull: false
+          ["officialList[" + that.data.currentSelected + "].dataArray[" + currentPageNum + "]"]: list,
+          ["officialList[" + that.data.currentSelected + "].currentPageNum"]: currentPageNum,
+          ["officialList[" + that.data.currentSelected + "].isPull"]: false,
+          ["officialList[" + that.data.currentSelected + "].isFirstLoad"]: false
         })
       },
       (err) => { })
@@ -125,9 +126,9 @@ Page({
   onItemClick: function (event) {
     var arrayIndex = event.currentTarget.dataset.array
     var toughIndex = event.currentTarget.dataset.index
-    if (this.data.dataArray[arrayIndex][toughIndex].link != null) {
+    if (this.data.officialList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].link != null) {
       wx.navigateTo({
-        url: '../web_view/webView?artUrl=' + this.data.dataArray[arrayIndex][toughIndex].link
+        url: '../web_view/webView?artUrl=' + this.data.officialList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].link
       })
     }
   },
@@ -138,7 +139,7 @@ Page({
     var arrayIndex = event.currentTarget.dataset.array
     var toughIndex = event.currentTarget.dataset.index
     this.setData({
-      ["dataArray[" + arrayIndex + "][" + toughIndex + "].isFocus"]: !this.data.dataArray[arrayIndex][toughIndex].isFocus
+      ["officialList[" + this.data.currentSelected + "].dataArray[" + arrayIndex + "][" + toughIndex + "].isFocus"]: !this.data.officialList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].isFocus
     })
 
   },
@@ -182,15 +183,16 @@ Page({
    */
   refresh: function () {
     let that = this
+    let current = that.data.currentSelected
     that.setData({
-      isPull: true
+      ["tabProjectList[" + current + "].isPull"]: true
     })
-    let id = this.data.officialList[this.data.currentSelected].id
-    this.getDataList(true, id)
+    let id = that.data.officialList[current].id
+    that.getDataList(true, id)
 
     setTimeout(() => {
       that.setData({
-        isPull: false
+        ["officialList[" + that.data.currentSelected + "].isPull"]: false
       })
     }, 5000)
   },

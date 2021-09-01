@@ -9,14 +9,7 @@ Page({
   data: {
     toView: "",
     officialList: [],
-    currentSelected: 0,
-    dataArray: [],
-    //当前页码
-    pageNum: 0,
-    //总页数
-    totalPageNume: 0,
-    totalHeight: 0,
-    isPull: false
+    currentSelected: 0
   },
   //绑定swiper
   bindChange(e) {
@@ -26,9 +19,10 @@ Page({
       currentSelected: position,
       toView: this.data.officialList[moveToMiddleIndex].viewId
     })
-
-    let id = this.data.officialList[position].id
-    this.getDataList(true, id)
+    if (this.data.officialList[position].isFirstLoad == true) {
+      let id = this.data.officialList[position].id
+      this.getDataList(true, id)
+    }
   },
   /**
    * 生命周期函数--监听页面加载
@@ -60,7 +54,11 @@ Page({
             viewId: 'official_' + item.id,
             courseId: item.courseId,
             name: item.name,
-            isCheck: index == 0 ? true : false
+            isFirstLoad: true, //是否第一次加载
+            totalPageNum: 0,  //总页数
+            currentPageNum: 0, //当前页
+            isPull: false,//是否刷新
+            dataArray: [] //存放每一页的数据
           })
         })
 
@@ -70,9 +68,7 @@ Page({
 
         let id = that.data.officialList[that.data.currentSelected].id
         that.getDataList(true, id)
-        that.setData({
-          toView: that.data.officialList[that.data.currentSelected].viewId
-        })
+    
       },
       (err) => { })
   },
@@ -84,9 +80,9 @@ Page({
 */
   getDataList: function (isRefresh, id) {
     let that = this
-    let currentPageNum = isRefresh ? 0 : that.data.pageNum + 1
+    let currentPageNum = isRefresh ? 0 :  (that.data.officialList[that.data.currentSelected].currentPageNum + 1)
     //大于最大页码时候 返回
-    if (currentPageNum > that.data.totalPageNume) {
+    if (currentPageNum > that.data.officialList[that.data.currentSelected].totalPageNum) {
       wx.showToast({
         title: '到底了',
       })
@@ -112,32 +108,16 @@ Page({
         })
         if (isRefresh) {
           that.setData({
-            dataArray: [],
-            totalPageNume: res.pageCount,
-            totalHeight: 0
+            ["officialList[" + that.data.currentSelected + "].dataArray"]: [],
+            ["officialList[" + that.data.currentSelected + "].totalPageNum"]: res.pageCount
           })
         }
         that.setData({
-          ["dataArray[" + currentPageNum + "]"]: list,
-          pageNum: currentPageNum,
-          isPull: false
-        },()=>{
-          let realHeight = that.data.totalHeight
-          //遍历计算距离
-         list.forEach((item, index, array) => {
-            wx.createSelectorQuery().select('#medium'+item.id).boundingClientRect(res => { //获取每个title高度
-              realHeight = realHeight +res.height
-              if (index == list.length - 1) {
-                console.log("total="+realHeight);
-                that.setData({
-                  totalHeight: realHeight
-                })
-              }
-            }).exec()
-  
-          })
+          ["officialList[" + that.data.currentSelected + "].dataArray[" + currentPageNum + "]"]: list,
+          ["officialList[" + that.data.currentSelected + "].currentPageNum"]: currentPageNum,
+          ["officialList[" + that.data.currentSelected + "].isPull"]: false,
+          ["officialList[" + that.data.currentSelected + "].isFirstLoad"]: false
         })
-  
       },
       (err) => { })
   },
@@ -147,10 +127,10 @@ Page({
   onItemClick: function (event) {
     var arrayIndex = event.currentTarget.dataset.array
     var toughIndex = event.currentTarget.dataset.index
-    if (this.data.dataArray[arrayIndex][toughIndex].link != null) {
+    if (this.data.officialList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].link != null) {
       wx.navigateTo({
         // url: this.data.dataArray[arrayIndex][toughIndex].link,
-        url: '../web_view/webView?artUrl=' + this.data.dataArray[arrayIndex][toughIndex].link
+        url: '../web_view/webView?artUrl=' + this.data.officialList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].link
       })
     }
   },
@@ -161,7 +141,7 @@ Page({
     var arrayIndex = event.currentTarget.dataset.array
     var toughIndex = event.currentTarget.dataset.index
     this.setData({
-      ["dataArray[" + arrayIndex + "][" + toughIndex + "].isFocus"]: !this.data.dataArray[arrayIndex][toughIndex].isFocus
+      ["officialList[" + this.data.currentSelected + "].dataArray[" + arrayIndex + "][" + toughIndex + "].isFocus"]: !this.data.officialList[this.data.currentSelected].dataArray[arrayIndex][toughIndex].isFocus
     })
 
   },
@@ -205,15 +185,16 @@ Page({
    */
   refresh: function () {
     let that = this
+    let current = that.data.currentSelected
     that.setData({
-      isPull: true
+      ["tabProjectList[" + current + "].isPull"]: true
     })
-    let id = this.data.officialList[this.data.currentSelected].id
-    this.getDataList(true, id)
+    let id = that.data.officialList[current].id
+    that.getDataList(true, id)
 
     setTimeout(() => {
       that.setData({
-        isPull: false
+        ["officialList[" + that.data.currentSelected + "].isPull"]: false
       })
     }, 5000)
   },
@@ -221,10 +202,11 @@ Page({
   /**
    * 页面上拉触底事件的处理函数
    */
-  onReachBottom: function () {  
-    
+  onReachBottom: function () {
+
   },
-  loadMore: function () { let id = this.data.officialList[this.data.currentSelected].id
+  loadMore: function () {
+    let id = this.data.officialList[this.data.currentSelected].id
     this.getDataList(false, id)
   }
   ,

@@ -19,18 +19,22 @@ page {
   width: fit-content;
   padding: 5px 5px 5px 5px;
   text-align: center;
-  background-color: #ccc;
+  background-color: white;
   font-size: medium;
-  color: white;
+  border-top: rgba(204, 204, 204, 0.726) solid 1px;
+  border-bottom: rgba(204, 204, 204, 0.726) solid 1px;
+  color: #ccc;
 }
 
 .top-name-checked {
   width: fit-content;
   padding: 5px 5px 5px 5px;
   text-align: center;
-  background-color: tomato;
-  color: white;
+  background-color: white;
+  border-top: rgba(204, 204, 204, 0.726) solid 1px;
+  border-bottom: tomato solid 2px;
   font-size: medium;
+  color: tomato;
 }
 
 .swiper {
@@ -108,6 +112,13 @@ page {
   color: #ccc;
   margin: 10px 10px 10px 0px;
   width: 100%;
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: normal !important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
 .text-project-url {
@@ -118,8 +129,8 @@ page {
 }
 
 .scroll-view-official ::-webkit-scrollbar {
-  display:none;
-  width:0;
-  height:0;
-  color:transparent;
+  display: none;
+  width: 0;
+  height: 0;
+  color: transparent;
 }
