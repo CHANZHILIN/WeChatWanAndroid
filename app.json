@@ -8,7 +8,6 @@
     "pages/web_view/webView",
     "pages/system/SystemInside"
   ],
-
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
@@ -17,7 +16,6 @@
     "backgroundColorTop": "#FF6347",
     "backgroundColorBottom": "#FF6347"
   },
-
   "tabBar": {
     "color": "#ccc",
     "selectedColor": "#FF6347",
