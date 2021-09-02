@@ -8,6 +8,7 @@
     "pages/web_view/webView",
     "pages/system/SystemInside"
   ],
+
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
