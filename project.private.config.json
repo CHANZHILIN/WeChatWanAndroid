@@ -1,0 +1,36 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/system/system",
+          "pathName": "pages/system/system",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/official_account/official_account",
+          "pathName": "pages/official_account/official_account",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/project/project",
+          "pathName": "pages/project/project",
+          "query": "",
+          "scene": null
+        }
+      ]
+    }
+  }
+}
