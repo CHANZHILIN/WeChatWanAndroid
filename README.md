@@ -1,1 +1,1 @@
-# WeChatWanAndroid for miniProgram
+# WeChatWanAndroid for miniProgram.
